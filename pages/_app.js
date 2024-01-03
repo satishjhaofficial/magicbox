@@ -25,30 +25,30 @@ function MyApp({ Component, pageProps }) {
   const pathname = usePathname();
   const [protectedRoute, setProtectedRoute] = useState(false);
 
-  useEffect(() => {
-    const authrole = parseInt(localStorage.getItem("mod_auth_role"));
-    const isLogined = localStorage.getItem("mod_auth_login");
-    const authPermission = JSON.parse(
-      localStorage.getItem("mod_auth_permission")
-    );
-    if (isLogined !== "isLogined") {
-      router.push("/login");
-      setProtectedRoute(true);
-    } else if (pathname === "/login") {
-      setProtectedRoute(true);
-    } else if (isLogined === "isLogined") {
-      if (
-        authPermission.includes(pathname.split("/").pop()) ||
-        (authPermission.includes("purchase") && pathname === "/")
-      ) {
-        setProtectedRoute(true);
-      } else {
-        setProtectedRoute(false);
-      }
-    }
+  // useEffect(() => {
+  //   const authrole = parseInt(localStorage.getItem("mod_auth_role"));
+  //   const isLogined = localStorage.getItem("mod_auth_login");
+  //   const authPermission = JSON.parse(
+  //     localStorage.getItem("mod_auth_permission")
+  //   );
+  //   if (isLogined !== "isLogined") {
+  //     router.push("/login");
+  //     setProtectedRoute(true);
+  //   } else if (pathname === "/login") {
+  //     setProtectedRoute(true);
+  //   } else if (isLogined === "isLogined") {
+  //     if (
+  //       authPermission.includes(pathname.split("/").pop()) ||
+  //       (authPermission.includes("purchase") && pathname === "/")
+  //     ) {
+  //       setProtectedRoute(true);
+  //     } else {
+  //       setProtectedRoute(false);
+  //     }
+  //   }
 
-    console.log(authPermission, authrole, isLogined);
-  }, []);
+  //   console.log(authPermission, authrole, isLogined);
+  // }, []);
 
   return (
     <ThemeProvider theme={theme}>
