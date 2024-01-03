@@ -87,7 +87,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: #e9e9e9;
+  background: #e9e9e9 !important;
   color: #000;
 }
 
@@ -139,7 +139,7 @@ a {
   font-weight: 600;
 }
 
-.side-toggle-btn {
+body .side-toggle-btn {
   position: absolute;
   top: 10px;
   z-index: 9999999;
