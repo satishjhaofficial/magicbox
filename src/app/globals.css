@@ -105,6 +105,7 @@ a {
 }
 #nav {
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #nav::-webkit-scrollbar {
@@ -149,6 +150,11 @@ a {
 .side-toggle-btn svg {
   color: #5c15e7;
   font-size: 26px;
+}
+
+.no-border fieldset {
+  border: 0;
+  outline: none;
 }
 
 @media (prefers-color-scheme: dark) {

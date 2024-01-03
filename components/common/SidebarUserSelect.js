@@ -9,8 +9,9 @@ import Select from "@mui/material/Select";
 
 const Div = styled.div`
   width: 100%;
-  paddinh-bottm: 16px;
+  padding-bottom: 16px;
   .sidebar-select {
+    background: #fff;
     label {
       transform: translate(14px, 8px);
       &.Mui-focused {

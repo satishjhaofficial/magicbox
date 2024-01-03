@@ -4,6 +4,9 @@ import styled from "@emotion/styled";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 const Div = styled.section`
+  position: fixed;
+  z-index: 99999;
+  top: 0;
   padding: 15px;
   width: 100%;
   background: #393e46;

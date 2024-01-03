@@ -7,8 +7,9 @@ import Header from "./common/Header";
 
 const Div = styled.div`
   .mainWrapper {
+    margin-top: 70px;
     .mainWrapperIn {
-    width: calc(100% - 240px);
+    width: calc(100% - 300px);
   }
 `;
 

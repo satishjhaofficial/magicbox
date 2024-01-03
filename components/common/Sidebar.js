@@ -35,7 +35,7 @@ const openedMixin = (theme) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflow: "hidden",
+  overflow: "unset",
 });
 
 const closedMixin = (theme) => ({
@@ -43,7 +43,7 @@ const closedMixin = (theme) => ({
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflow: "hidden",
+  overflow: "unset",
   top: headerHeight,
   width: `calc(${theme.spacing(2)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
@@ -160,22 +160,31 @@ const SideBar = (props) => {
     <>
       <Box sx={{ display: "flex" }} position="relative">
         {" "}
-        <IconButton className="side-toggle-btn" onClick={handleDrawerToggle}>
-          {open ? (
-            <ArrowCircleLeftRoundedIcon />
-          ) : (
-            <ArrowCircleRightRoundedIcon />
-          )}
-        </IconButton>
         <CssBaseline />
         <Drawer variant="permanent" open={open}>
           <DrawerHeader>
-            <Box className="header-logo" p={2}>
-              <Typography variant="h3" fontSize={20} fontWeight={600}>
-                AI Workflows
-              </Typography>
+            <IconButton
+              className="side-toggle-btn"
+              onClick={handleDrawerToggle}
+            >
+              {open ? (
+                <ArrowCircleLeftRoundedIcon />
+              ) : (
+                <ArrowCircleRightRoundedIcon />
+              )}
+            </IconButton>
+            <Box
+              visibility={open ? "visible" : "hidden"}
+              display="flex"
+              flexWrap="wrap"
+            >
+              <Box className="header-logo" p={2}>
+                <Typography variant="h3" fontSize={20} fontWeight={600}>
+                  AI Workflows
+                </Typography>
+              </Box>
+              <SidebarUserSelect />
             </Box>
-            <SidebarUserSelect />
           </DrawerHeader>
           <Divider />
           <List id="nav">

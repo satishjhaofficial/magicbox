@@ -104,6 +104,7 @@ const QuestionAnswerGeneration = () => {
               <Box borderRight="1px solid #8f8f8f">
                 <TextField
                   id="outlined-basic"
+                  className="no-border"
                   fullWidth
                   variant="outlined"
                   placeholder={`Enter or paste your text and press "Generate Questions"`}
@@ -114,18 +115,52 @@ const QuestionAnswerGeneration = () => {
                   sx={{ border: 0, outline: "none" }}
                 />
               </Box>
-              <Box p={2}>
-                <Button
-                  startIcon={<FileUploadOutlinedIcon />}
-                  variant="outlined"
-                  sx={{
-                    color: "#8f8f8f",
-                    border: "1px solid #8f8f8f",
-                    borderRadius: "30px",
-                  }}
-                >
-                  Upload
-                </Button>
+              <Box
+                p={2}
+                borderTop="1px solid #8f8f8f"
+                borderRight="1px solid #8f8f8f"
+              >
+                <Box display="flex" justifyContent="space-between">
+                  <Button
+                    startIcon={<FileUploadOutlinedIcon />}
+                    variant="outlined"
+                    sx={{
+                      color: "#8f8f8f",
+                      border: "1px solid #8f8f8f",
+                      borderRadius: "30px",
+                      textTransform: "capitalize",
+                      outline: "none",
+                    }}
+                  >
+                    Upload File
+                  </Button>
+                  <Box>
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        color: "#5c15e7",
+                        border: "0 !important",
+                        textTransform: "capitalize",
+                        outline: "none",
+                      }}
+                    >
+                      Reset
+                    </Button>
+                    <Button
+                      variant="filled"
+                      sx={{
+                        color: "#fff",
+                        border: "1px solid #5c15e7",
+                        background: "#5c15e7",
+                        borderRadius: "30px",
+                        textTransform: "capitalize",
+                        outline: "none",
+                      }}
+                    >
+                      Generate Questions
+                    </Button>
+                  </Box>
+                </Box>
               </Box>
             </Grid>
           </Grid>
