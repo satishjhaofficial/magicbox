@@ -121,6 +121,18 @@ const ListData = [
     subtitle: "Generate Summary",
     link: "/djh",
   },
+  {
+    icon: <HelpCenterRoundedIcon />,
+    label: "Suggestive Keywords",
+    subtitle: "Generate Suggestive Keywords",
+    link: "/djh",
+  },
+  {
+    icon: <HelpCenterRoundedIcon />,
+    label: "Grading Assistant",
+    subtitle: "Create Auto Grading Answers",
+    link: "/djh",
+  },
 ];
 
 const SideBar = (props) => {

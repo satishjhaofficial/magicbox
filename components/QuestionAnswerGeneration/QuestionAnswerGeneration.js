@@ -4,6 +4,7 @@ import { Box, Typography, Grid, TextField, Button } from "@mui/material";
 import styled from "@emotion/styled";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
+import { Formik } from "formik";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -28,6 +29,7 @@ const QuestionAnswerGeneration = () => {
   const [userSelect, setUserSelect] = useState("");
   const [questionCount, setQuestionCount] = useState("02");
   const [questionValue, setQuestionValue] = useState("");
+  const [fileUrl, setFileUrl] = useState(null);
 
   const handleChange = (event) => {
     setUserSelect(event.target.value);
@@ -43,6 +45,7 @@ const QuestionAnswerGeneration = () => {
       document.body.classList.remove("home");
     };
   }, []);
+
   return (
     <Div>
       <Box display="flex" alignItems="center" mb={2}>
@@ -100,67 +103,130 @@ const QuestionAnswerGeneration = () => {
         </Box>
         <Box>
           <Grid container>
-            <Grid item md={6}>
-              <Box borderRight="1px solid #8f8f8f">
-                <TextField
-                  id="outlined-basic"
-                  className="no-border"
-                  fullWidth
-                  variant="outlined"
-                  placeholder={`Enter or paste your text and press "Generate Questions"`}
-                  onChange={handleQuestionCount}
-                  value={questionValue}
-                  multiline
-                  rows={20}
-                  sx={{ border: 0, outline: "none" }}
-                />
-              </Box>
-              <Box
-                p={2}
-                borderTop="1px solid #8f8f8f"
-                borderRight="1px solid #8f8f8f"
+            <Grid item xs={12}>
+              <Formik
+                initialValues={{
+                  upload_file: "",
+                  question: "",
+                }}
+                onSubmit={async (values, { setSubmitting }) => {
+                  setSubmitting(true);
+
+                  setSubmitting(false);
+                }}
               >
-                <Box display="flex" justifyContent="space-between">
-                  <Button
-                    startIcon={<FileUploadOutlinedIcon />}
-                    variant="outlined"
-                    sx={{
-                      color: "#8f8f8f",
-                      border: "1px solid #8f8f8f",
-                      borderRadius: "30px",
-                      textTransform: "capitalize",
-                      outline: "none",
-                    }}
-                  >
-                    Upload File
-                  </Button>
-                  <Box>
-                    <Button
-                      variant="outlined"
-                      sx={{
-                        color: "#5c15e7",
-                        border: "0 !important",
-                        textTransform: "capitalize",
-                        outline: "none",
-                      }}
-                    >
-                      Reset
-                    </Button>
-                    <Button
-                      variant="filled"
-                      sx={{
-                        color: "#fff",
-                        border: "1px solid #5c15e7",
-                        background: "#5c15e7",
-                        borderRadius: "30px",
-                        textTransform: "capitalize",
-                        outline: "none",
-                      }}
-                    >
-                      Generate Questions
-                    </Button>
-                  </Box>
-                </Box>
+                {({
+                  handleSubmit,
+                  isSubmitting,
+                  setFieldValue,
+                  handleChange,
+                  resetForm,
+                  values,
+                }) => (
+                  <form onSubmit={handleSubmit}>
+                    <Box>
+                      <TextField
+                        id="outlined-basic"
+                        className="no-border textarea-box"
+                        fullWidth
+                        variant="outlined"
+                        placeholder={`Enter or paste your text and press "Generate Questions"`}
+                        value={values.question}
+                        required
+                        name="question"
+                        onChange={handleChange}
+                        multiline
+                        rows={20}
+                        sx={{ border: 0, outline: "none" }}
+                      />
+                    </Box>
+                    <Box p={2} borderBottom="1px solid #8f8f8f">
+                      <Box display="flex" justifyContent="space-between">
+                        <Box>
+                          <input
+                            accept="image/*"
+                            style={{ display: "none" }}
+                            id="upload-button-file"
+                            name="upload_file"
+                            type="file"
+                            onChange={(e) => {
+                              setFieldValue(
+                                "upload_file",
+                                e.currentTarget.files[0]
+                              );
+                              setFileUrl(
+                                URL.createObjectURL(e.target.files[0])
+                              );
+                            }}
+                          />
+                          <label htmlFor="upload-button-file">
+                            <Button
+                              startIcon={<FileUploadOutlinedIcon />}
+                              variant="outlined"
+                              component="span"
+                              sx={{
+                                color: "#8f8f8f",
+                                border: "1px solid #8f8f8f",
+                                borderRadius: "30px",
+                                textTransform: "capitalize",
+                                outline: "none",
+                              }}
+                            >
+                              Upload File
+                            </Button>
+                          </label>
+                          {fileUrl && (
+                            <Box ml={1} display="inline-block">
+                              <img
+                                src={fileUrl}
+                                alt="image"
+                                height="50px"
+                                width="50px"
+                              />
+                            </Box>
+                          )}
+                        </Box>
+                        <Box>
+                          <Button
+                            variant="outlined"
+                            sx={{
+                              color: "#5c15e7",
+                              border: "0 !important",
+                              textTransform: "capitalize",
+                              outline: "none",
+                            }}
+                            onClick={() => resetForm()}
+                          >
+                            Reset
+                          </Button>
+                          <Button
+                            variant="filled"
+                            sx={{
+                              color: "#fff",
+                              border: "1px solid #5c15e7",
+                              background: "#5c15e7",
+                              borderRadius: "30px",
+                              textTransform: "capitalize",
+                              outline: "none",
+                            }}
+                            className="blue-btn"
+                            type="submit"
+                            disabled={isSubmitting}
+                          >
+                            Generate Questions
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </form>
+                )}
+              </Formik>
+            </Grid>
+            <Grid item xs={12}>
+              <Box minHeight="30vh" p={2}>
+                <Typography color="#a1a1a1">
+                  AI generated result will appear here
+                </Typography>
               </Box>
             </Grid>
           </Grid>

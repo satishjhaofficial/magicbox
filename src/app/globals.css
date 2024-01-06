@@ -157,6 +157,27 @@ body .side-toggle-btn {
   outline: none;
 }
 
+.textarea-box textarea {
+  max-height: 30vh;
+  overflow-y: auto;
+  resize: none;
+}
+
+.textarea-box textarea::-webkit-scrollbar {
+  width: 3px;
+}
+
+.textarea-box textarea::-webkit-scrollbar-track {
+  background: #fff;
+}
+.textarea-box textarea::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.blue-btn:hover {
+  background: #5c15e7;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
