@@ -123,6 +123,17 @@ a {
   text-decoration: none;
   color: #6b7280;
 }
+#nav a .MuiListItemIcon-root {
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  min-width: unset;
+  height: 28px;
+  border-radius: 4px;
+  background: #5c15e7;
+  margin-right: 12px;
+}
+
 #nav a.active {
   display: block;
   background: #f0e8ff;
@@ -134,11 +145,14 @@ a {
 }
 #nav a .MuiListItemText-primary {
   color: #000;
+  font-size: 14px;
 }
 #nav a.active .MuiListItemText-primary {
   font-weight: 600;
 }
-
+#nav a .MuiListItemText-secondary {
+  font-size: 12px;
+}
 body .side-toggle-btn {
   position: absolute;
   top: 10px;

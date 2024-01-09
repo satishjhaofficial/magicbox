@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, TextField, FormControl, IconButton } from "@mui/material";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import styled from "@emotion/styled";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Div = styled.div`
   width: 100%;
@@ -14,7 +12,7 @@ const Div = styled.div`
     background: #fff;
     label {
       transform: translate(14px, 8px);
-      &.Mui-focused {
+      &.MuiInputLabel-shrink {
         transform: translate(14px, -9px) scale(0.75);
       }
     }
@@ -27,24 +25,65 @@ const Div = styled.div`
     min-width: auto;
     padding: 5px 10px;
   }
+  .sidebar-search-box {
+    border: 1px solid #6a6a6a;
+    height: 40px;
+    input {
+      font-size: 14px;
+      color: #18181a;
+      outline: none;
+    }
+    fieldset {
+      border: 0;
+      outline: none;
+    }
+  }
 `;
 
 const SidebarUserSelect = () => {
+  const [searchOpen, setSearchOpen] = useState(false);
   const [userSelect, setUserSelect] = useState("");
+  const [searchValue, setSearchValue] = useState("");
 
   const handleChange = (event) => {
     setUserSelect(event.target.value);
   };
   return (
     <Div>
-      <Box sx={{ minWidth: 120 }} display="flex">
+      <Box
+        display={searchOpen ? "flex" : "none"}
+        bgcolor="#fff"
+        className="sidebar-search-box"
+      >
+        <TextField
+          type="text"
+          value={searchValue}
+          size="small"
+          border="0"
+          onChange={(e) => {
+            setSearchValue(e.target.value);
+          }}
+          placeholder="Search AI Workflows"
+        />
+        <IconButton
+          onClick={() => {
+            setSearchOpen(false);
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        <IconButton>
+          <SearchSharpIcon />
+        </IconButton>
+      </Box>
+      <Box sx={{ minWidth: 120 }} display={searchOpen ? "none" : "flex"}>
         <FormControl fullWidth className="sidebar-select">
-          <InputLabel id="demo-simple-select-label">Select User</InputLabel>
-          <Select
+          <TextField
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={userSelect}
             label="Select User"
+            select
             size="small"
             onChange={handleChange}
           >
@@ -52,9 +91,15 @@ const SidebarUserSelect = () => {
             <MenuItem value={20}>Teacher</MenuItem>
             <MenuItem value={30}>Student / Learner</MenuItem>
             <MenuItem value={30}>Content Development</MenuItem>
-          </Select>
+          </TextField>
         </FormControl>
-        <Button variant="outlined" className="sidebar-search-open">
+        <Button
+          variant="outlined"
+          className="sidebar-search-open"
+          onClick={() => {
+            setSearchOpen(true);
+          }}
+        >
           <SearchSharpIcon />
         </Button>
       </Box>

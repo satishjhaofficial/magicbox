@@ -9,13 +9,9 @@ import {
   IconButton,
 } from "@mui/material";
 import styled from "@emotion/styled";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik } from "formik";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 
 const Div = styled.div`
   .conetnt-boxin {
@@ -33,18 +29,8 @@ const Div = styled.div`
   }
 `;
 
-const QuestionAnswerGeneration = () => {
-  const [userSelect, setUserSelect] = useState("");
-  const [questionCount, setQuestionCount] = useState("02");
+const Summarization = () => {
   const [fileUrl, setFileUrl] = useState(null);
-
-  const handleChange = (event) => {
-    setUserSelect(event.target.value);
-  };
-
-  const handleQuestionCount = (event) => {
-    setQuestionCount(event.target.value);
-  };
 
   useEffect(() => {
     document.body.classList.add("home");
@@ -60,55 +46,10 @@ const QuestionAnswerGeneration = () => {
       <Box display="flex" alignItems="center" mb={2}>
         <InfoOutlinedIcon fontSize="12px" />
         <Typography ml={1} fontSize={14}>
-          AI technology that automatically generates questions and answers
+          Summarize any text with ease.
         </Typography>
       </Box>
       <Box className="conetnt-boxin" mt={2}>
-        <Box px={2} py={1} borderBottom="1px solid #8f8f8f">
-          <Grid container spacing={2}>
-            <Grid item md={4}>
-              <Box display="flex" alignItems="center">
-                <Typography whiteSpace="nowrap" mr={1}>
-                  Type of Question:{" "}
-                </Typography>
-                <FormControl fullWidth className="sidebar-select">
-                  <InputLabel id="demo-simple-select-label">
-                    Select Choice
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={userSelect}
-                    label="Select Choice"
-                    size="small"
-                    onChange={handleChange}
-                  >
-                    <MenuItem value="all_users">Single Choice</MenuItem>
-                    <MenuItem value={20}>Multiple Choice</MenuItem>
-                    <MenuItem value={30}>Fill in the blank</MenuItem>
-                    <MenuItem value={30}>True/False</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-            </Grid>
-            <Grid item md={3}>
-              <Box display="flex" alignItems="center">
-                <Typography whiteSpace="nowrap" mr={1}>
-                  Number of Question:{" "}
-                </Typography>
-
-                <TextField
-                  id="outlined-basic"
-                  size="small"
-                  sx={{ maxWidth: "50px" }}
-                  variant="outlined"
-                  onChange={handleQuestionCount}
-                  value={questionCount}
-                />
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
         <Box>
           <Grid container>
             <Grid item xs={12}>
@@ -139,7 +80,7 @@ const QuestionAnswerGeneration = () => {
                           className="no-border textarea-box"
                           fullWidth
                           variant="outlined"
-                          placeholder={`Enter or paste your text and press "Generate Questions"`}
+                          placeholder={`Enter or paste your text and press “Submit”`}
                           value={values.question}
                           required
                           name="question"
@@ -265,7 +206,7 @@ const QuestionAnswerGeneration = () => {
                             type="submit"
                             disabled={isSubmitting}
                           >
-                            Generate Questions
+                            Submit
                           </Button>
                         </Box>
                       </Box>
@@ -288,4 +229,4 @@ const QuestionAnswerGeneration = () => {
   );
 };
 
-export default QuestionAnswerGeneration;
+export default Summarization;

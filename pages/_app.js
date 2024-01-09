@@ -1,13 +1,13 @@
 import Layout from "../components/Layout";
 import Head from "next/head";
-import { Roboto } from "next/font/google";
+import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-const roboto = Roboto({
-  weight: ["400", "500", "700"],
-  style: ["normal", "italic"],
+const inter = Inter({
+  weight: ["400", "500", "600", "700"],
+  style: ["normal"],
   subsets: ["latin"],
   display: "swap",
 });
@@ -16,7 +16,7 @@ import "../src/app/globals.css";
 
 const theme = createTheme({
   typography: {
-    fontFamily: roboto.style.fontFamily,
+    fontFamily: inter.style.fontFamily,
   },
 });
 
@@ -55,12 +55,12 @@ function MyApp({ Component, pageProps }) {
       <style jsx global>{`
         html,
         body {
-          font-family: ${roboto.style.fontFamily};
+          font-family: ${inter.style.fontFamily};
         }
       `}</style>
       <Head>
         <title>Magic Box</title>
-        <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="/img/favicon.png" />
       </Head>
       <Layout pageProps={pageProps}>
         <Component {...pageProps} />

@@ -98,37 +98,37 @@ const Drawer = styled(MuiDrawer, {
 
 const ListData = [
   {
-    icon: <HelpCenterRoundedIcon />,
+    icon: "/img/icon/question-icon.svg",
     label: "Question & Answer Generation",
     subtitle: "Generate Question & Answer",
     link: "",
   },
   {
-    icon: <HelpCenterRoundedIcon />,
+    icon: "/img/icon/image-icon.svg",
     label: "Image Alt Text",
     subtitle: "Generate Image Alt Text",
     link: "/abc",
   },
   {
-    icon: <HelpCenterRoundedIcon />,
+    icon: "/img/icon/text-icon.svg",
     label: "Contextual Alt Text",
     subtitle: "Generate Contextual Alt Text",
     link: "/test",
   },
   {
-    icon: <HelpCenterRoundedIcon />,
+    icon: "/img/icon/summarization-icon.svg",
     label: "Summarization",
     subtitle: "Generate Summary",
-    link: "/djh",
+    link: "/summarization",
   },
   {
-    icon: <HelpCenterRoundedIcon />,
+    icon: "/img/icon/keywords-icon.svg",
     label: "Suggestive Keywords",
     subtitle: "Generate Suggestive Keywords",
-    link: "/djh",
+    link: "/suggestive-keywords",
   },
   {
-    icon: <HelpCenterRoundedIcon />,
+    icon: "/img/icon/grading-icon.svg",
     label: "Grading Assistant",
     subtitle: "Create Auto Grading Answers",
     link: "/djh",
@@ -203,11 +203,11 @@ const SideBar = (props) => {
             {ListData.map((item, index) => (
               <>
                 <a
-                  href={item.children ? "#" : `/${item.link}`}
-                  key={item.label}
-                  className={pathname == `/${item.link}` ? "active" : ""}
-                  onClick={item.children ? handleClick : null}
-                  style={{ color: item.children ? "#6B7280" : "" }}
+                  href={item?.children ? "#" : `${item?.link}`}
+                  key={item?.label}
+                  className={pathname == `${item?.link}` ? "active" : ""}
+                  onClick={item?.children ? handleClick : null}
+                  style={{ color: item?.children ? "#6B7280" : "" }}
                 >
                   <ListItem>
                     <ListItemIcon
@@ -215,13 +215,13 @@ const SideBar = (props) => {
                         minWidth: "35px",
                       }}
                     >
-                      {item.icon}
+                      <img src={item?.icon} alt={item?.label} />
                     </ListItemIcon>
                     <ListItemText
-                      primary={item.label}
+                      primary={item?.label}
                       secondary={item?.subtitle}
                     />
-                    {item.children ? (
+                    {item?.children ? (
                       menuOpen ? (
                         <KeyboardArrowUpIcon
                           sx={{ color: "#6B7280 !important" }}
@@ -243,11 +243,13 @@ const SideBar = (props) => {
                   {item.submenu?.map((items, i) => (
                     <a
                       key={items.label}
-                      href={`/${items.link}`}
-                      className={pathname == `/${items.link}` ? "active" : ""}
+                      href={`${items.link}`}
+                      className={pathname == `${items.link}` ? "active" : ""}
                     >
                       <ListItem style={{ paddingLeft: "30px" }}>
-                        <ListItemIcon>{items.icon}</ListItemIcon>
+                        <ListItemIcon>
+                          <img src={item.icon} alt={item.label} />
+                        </ListItemIcon>
                         <ListItemText primary={items.label} />
                       </ListItem>
                     </a>

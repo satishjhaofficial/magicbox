@@ -27,7 +27,7 @@ function Header({ pageProps }) {
   return (
     <Div className="header">
       <Box display="flex" alignItems="center" justifyContent="space-between">
-        <img src="/img/favicon.ico" alt="Logo" />
+        <img src="/img/logo.svg" alt="Logo" title="Magic Box" />
         <Typography variant="h1">{pageProps?.page_title}</Typography>
         <IconButton>
           <CloseRoundedIcon />
