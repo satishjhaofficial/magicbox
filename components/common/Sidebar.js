@@ -101,7 +101,7 @@ const ListData = [
     icon: "/img/icon/question-icon.svg",
     label: "Question & Answer Generation",
     subtitle: "Generate Question & Answer",
-    link: "",
+    link: "/",
   },
   {
     icon: "/img/icon/image-icon.svg",
