@@ -26,7 +26,7 @@ const Div = styled.div`
   .sidebar-select {
     label {
       transform: translate(14px, 8px);
-      &.Mui-focused {
+      &.MuiInputLabel-shrink {
         transform: translate(14px, -9px) scale(0.75);
       }
     }
@@ -170,7 +170,7 @@ const QuestionAnswerGeneration = () => {
                               width="30px"
                             />
                             <Typography
-                              maxWidth={150}
+                              maxWidth={200}
                               whiteSpace="nowrap"
                               overflow="hidden"
                               textOverflow="ellipsis"

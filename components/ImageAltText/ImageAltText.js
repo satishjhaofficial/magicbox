@@ -14,8 +14,7 @@ import InputLabel from "@mui/material/InputLabel";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik } from "formik";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import { useDropzone } from "react-dropzone";
 
 const Div = styled.div`
   .conetnt-boxin {
@@ -33,15 +32,36 @@ const Div = styled.div`
   }
 `;
 
-const SuggestiveKeywords = () => {
-  const [fileUrl, setFileUrl] = useState(null);
+const ImageAltText = () => {
+  const [files, setFiles] = useState();
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: {
+      "image/jpeg": [],
+      "image/jpg": [],
+      "image/webp": [],
+      "image/gif": [],
+      "image/png": [],
+    },
+    multiple: false,
+    onDrop: (acceptedFiles) => {
+      setFiles(
+        acceptedFiles.map((files) =>
+          Object.assign(files, {
+            preview: URL.createObjectURL(files),
+          })
+        )
+      );
+    },
+  });
 
+  console.log(files);
   return (
     <Div>
       <Box display="flex" alignItems="center" mb={2}>
         <InfoOutlinedIcon fontSize="12px" />
         <Typography ml={1} fontSize={14}>
-          Generate keywords using AI
+          Generate alt text for any images in a few clicks with this simple and
+          effective tool!
         </Typography>
       </Box>
       <Box className="conetnt-boxin" mt={2}>
@@ -50,7 +70,6 @@ const SuggestiveKeywords = () => {
             <Grid item xs={12}>
               <Formik
                 initialValues={{
-                  upload_file: "",
                   question: "",
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
@@ -69,24 +88,37 @@ const SuggestiveKeywords = () => {
                 }) => (
                   <form onSubmit={handleSubmit}>
                     <Box minHeight="30vh">
-                      {!fileUrl && (
-                        <TextField
-                          id="outlined-basic"
-                          className="no-border textarea-box"
-                          fullWidth
-                          variant="outlined"
-                          placeholder={`Enter or paste your text and press “Submit”`}
-                          value={values.question}
-                          required
-                          name="question"
-                          onChange={handleChange}
-                          multiline
-                          rows={20}
-                          inputProps={{ maxLength: 3000 }}
-                          sx={{ border: 0, outline: "none" }}
-                        />
+                      {!files && (
+                        <Box
+                          p={2}
+                          minHeight="30vh"
+                          sx={{ cursor: "pointer" }}
+                          {...getRootProps()}
+                          className={isDragActive ? "dropboxactive" : "dropbox"}
+                        >
+                          <input {...getInputProps()} />
+                          <Typography>
+                            Drag or Upload your own images
+                          </Typography>{" "}
+                          <Box display="flex" justifyContent="center" mt={5}>
+                            <Button
+                              startIcon={<FileUploadOutlinedIcon />}
+                              variant="outlined"
+                              component="span"
+                              sx={{
+                                color: "#565656",
+                                border: "1px solid #565656",
+                                borderRadius: "30px",
+                                textTransform: "capitalize",
+                                outline: "none",
+                              }}
+                            >
+                              Upload File
+                            </Button>
+                          </Box>
+                        </Box>
                       )}
-                      {fileUrl && (
+                      {files && (
                         <Box p={1}>
                           <Box
                             mr={1}
@@ -100,8 +132,8 @@ const SuggestiveKeywords = () => {
                             }}
                           >
                             <img
-                              src={fileUrl}
-                              alt="image"
+                              src={URL.createObjectURL(files[0])}
+                              alt={files[0].name}
                               height="30px"
                               width="30px"
                             />
@@ -113,12 +145,11 @@ const SuggestiveKeywords = () => {
                               fontSize={12}
                               mx={1}
                             >
-                              {values.upload_file.name}
+                              {files[0].name}
                             </Typography>
                             <IconButton
                               onClick={() => {
-                                setFieldValue("upload_file", "");
-                                setFileUrl(null);
+                                setFiles(null);
                               }}
                             >
                               <CloseIcon />
@@ -129,47 +160,7 @@ const SuggestiveKeywords = () => {
                     </Box>
                     <Box p={2} borderBottom="1px solid #8f8f8f">
                       <Box display="flex" justifyContent="space-between">
-                        {values?.question?.length > 0 ? (
-                          <Typography fontSize={12}>
-                            {" "}
-                            {values?.question?.length}/3000 Characters
-                          </Typography>
-                        ) : (
-                          <Box>
-                            <input
-                              accept="image/*"
-                              style={{ display: "none" }}
-                              id="upload-button-file"
-                              name="upload_file"
-                              type="file"
-                              onChange={(e) => {
-                                setFieldValue(
-                                  "upload_file",
-                                  e.currentTarget.files[0]
-                                );
-                                setFileUrl(
-                                  URL.createObjectURL(e.target.files[0])
-                                );
-                              }}
-                            />
-                            <label htmlFor="upload-button-file">
-                              <Button
-                                startIcon={<FileUploadOutlinedIcon />}
-                                variant="outlined"
-                                component="span"
-                                sx={{
-                                  color: "#565656",
-                                  border: "1px solid #565656",
-                                  borderRadius: "30px",
-                                  textTransform: "capitalize",
-                                  outline: "none",
-                                }}
-                              >
-                                Upload File
-                              </Button>
-                            </label>
-                          </Box>
-                        )}
+                        <Box></Box>
                         <Box>
                           <Button
                             variant="outlined"
@@ -181,8 +172,6 @@ const SuggestiveKeywords = () => {
                             }}
                             onClick={() => {
                               resetForm();
-                              setFieldValue("upload_file", "");
-                              setFileUrl(null);
                             }}
                           >
                             Reset
@@ -201,7 +190,7 @@ const SuggestiveKeywords = () => {
                             type="submit"
                             disabled={isSubmitting}
                           >
-                            Submit
+                            Generate Questions
                           </Button>
                         </Box>
                       </Box>
@@ -224,4 +213,4 @@ const SuggestiveKeywords = () => {
   );
 };
 
-export default SuggestiveKeywords;
+export default ImageAltText;

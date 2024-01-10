@@ -40,14 +40,15 @@ const Div = styled.div`
   }
 `;
 
-const SidebarUserSelect = () => {
+const SidebarUserSelect = ({
+  userSelect,
+  handleUserSelect,
+  searchValue,
+  handleSidebarSearch,
+  setSearchValue,
+}) => {
   const [searchOpen, setSearchOpen] = useState(false);
-  const [userSelect, setUserSelect] = useState("");
-  const [searchValue, setSearchValue] = useState("");
 
-  const handleChange = (event) => {
-    setUserSelect(event.target.value);
-  };
   return (
     <Div>
       <Box
@@ -60,19 +61,19 @@ const SidebarUserSelect = () => {
           value={searchValue}
           size="small"
           border="0"
-          onChange={(e) => {
-            setSearchValue(e.target.value);
-          }}
+          required
+          onChange={(e) => setSearchValue(e.target.value)}
           placeholder="Search AI Workflows"
         />
         <IconButton
           onClick={() => {
+            setSearchValue("");
             setSearchOpen(false);
           }}
         >
           <CloseIcon />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={handleSidebarSearch}>
           <SearchSharpIcon />
         </IconButton>
       </Box>
@@ -85,12 +86,12 @@ const SidebarUserSelect = () => {
             label="Select User"
             select
             size="small"
-            onChange={handleChange}
+            onChange={handleUserSelect}
           >
-            <MenuItem value="all_users">All Users</MenuItem>
-            <MenuItem value={20}>Teacher</MenuItem>
-            <MenuItem value={30}>Student / Learner</MenuItem>
-            <MenuItem value={30}>Content Development</MenuItem>
+            <MenuItem value="all">All Users</MenuItem>
+            <MenuItem value="teacher">Teacher</MenuItem>
+            <MenuItem value="student">Student / Learner</MenuItem>
+            <MenuItem value="content">Content Development</MenuItem>
           </TextField>
         </FormControl>
         <Button

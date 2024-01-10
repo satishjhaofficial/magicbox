@@ -32,15 +32,6 @@ const Div = styled.div`
 const Summarization = () => {
   const [fileUrl, setFileUrl] = useState(null);
 
-  useEffect(() => {
-    document.body.classList.add("home");
-    return () => {
-      document.body.classList.remove("home");
-    };
-  }, []);
-
-  console.log(fileUrl);
-
   return (
     <Div>
       <Box display="flex" alignItems="center" mb={2}>
@@ -111,7 +102,7 @@ const Summarization = () => {
                               width="30px"
                             />
                             <Typography
-                              maxWidth={150}
+                              maxWidth={200}
                               whiteSpace="nowrap"
                               overflow="hidden"
                               textOverflow="ellipsis"

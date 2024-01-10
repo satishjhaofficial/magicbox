@@ -102,36 +102,112 @@ const ListData = [
     label: "Question & Answer Generation",
     subtitle: "Generate Question & Answer",
     link: "/",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "teacher",
+      },
+    ],
   },
   {
     icon: "/img/icon/image-icon.svg",
     label: "Image Alt Text",
     subtitle: "Generate Image Alt Text",
-    link: "/abc",
+    link: "/image-alt-text",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "teacher",
+      },
+    ],
   },
   {
     icon: "/img/icon/text-icon.svg",
     label: "Contextual Alt Text",
     subtitle: "Generate Contextual Alt Text",
     link: "/test",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "student",
+      },
+    ],
   },
   {
     icon: "/img/icon/summarization-icon.svg",
     label: "Summarization",
     subtitle: "Generate Summary",
     link: "/summarization",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "student",
+      },
+    ],
   },
   {
     icon: "/img/icon/keywords-icon.svg",
     label: "Suggestive Keywords",
     subtitle: "Generate Suggestive Keywords",
     link: "/suggestive-keywords",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "student",
+      },
+    ],
   },
   {
     icon: "/img/icon/grading-icon.svg",
     label: "Grading Assistant",
     subtitle: "Create Auto Grading Answers",
-    link: "/djh",
+    link: "/grading-assistant",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "student",
+      },
+    ],
+  },
+  {
+    icon: "/img/icon/content-icon.svg",
+    label: "Content Curation",
+    subtitle: "Create Content",
+    link: "",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "student",
+      },
+    ],
+  },
+  {
+    icon: "/img/icon/assessment-icon.svg",
+    label: "Assessment",
+    subtitle: "Create Assessment",
+    link: "",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "student",
+      },
+    ],
   },
 ];
 
@@ -141,6 +217,9 @@ const SideBar = (props) => {
   const pathname = usePathname();
   const [open, setOpen] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuList, setMenuList] = useState(ListData);
+  const [userSelect, setUserSelect] = useState("");
+  const [searchValue, setSearchValue] = useState("");
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -150,6 +229,46 @@ const SideBar = (props) => {
   const handleDrawerToggle = () => {
     setOpen(!open);
   };
+
+  const handleUserSelect = (e) => {
+    setUserSelect(e.target.value);
+  };
+
+  const handleSidebarSearch = (e) => {
+    const filterBySearch = ListData?.filter((item) => {
+      if (item?.label?.toLowerCase().includes(searchValue.toLowerCase())) {
+        return item;
+      } else if (
+        item?.subtitle?.toLowerCase().includes(searchValue.toLowerCase())
+      ) {
+        return item;
+      }
+    });
+    setMenuList(filterBySearch);
+  };
+
+  useEffect(() => {
+    const filtered = ListData.filter((chat) => {
+      const searchValue = userSelect.toLowerCase();
+      return (
+        chat.user_type.filter((user) =>
+          user.name.toLowerCase().includes(searchValue)
+        ).length > 0
+      );
+    });
+    setMenuList(filtered);
+    if (userSelect === "") {
+      setMenuList(ListData);
+      return;
+    }
+  }, [userSelect]);
+
+  useEffect(() => {
+    if (searchValue === "") {
+      setMenuList(ListData);
+      return;
+    }
+  }, [searchValue]);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 767px)");
@@ -195,46 +314,54 @@ const SideBar = (props) => {
                   AI Workflows
                 </Typography>
               </Box>
-              <SidebarUserSelect />
+              <SidebarUserSelect
+                userSelect={userSelect}
+                setUserSelect={setUserSelect}
+                handleUserSelect={handleUserSelect}
+                searchValue={searchValue}
+                handleSidebarSearch={handleSidebarSearch}
+                setSearchValue={setSearchValue}
+              />
             </Box>
           </DrawerHeader>
           <Divider />
           <List id="nav">
-            {ListData.map((item, index) => (
-              <>
-                <a
-                  href={item?.children ? "#" : `${item?.link}`}
-                  key={item?.label}
-                  className={pathname == `${item?.link}` ? "active" : ""}
-                  onClick={item?.children ? handleClick : null}
-                  style={{ color: item?.children ? "#6B7280" : "" }}
-                >
-                  <ListItem>
-                    <ListItemIcon
-                      sx={{
-                        minWidth: "35px",
-                      }}
-                    >
-                      <img src={item?.icon} alt={item?.label} />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={item?.label}
-                      secondary={item?.subtitle}
-                    />
-                    {item?.children ? (
-                      menuOpen ? (
-                        <KeyboardArrowUpIcon
-                          sx={{ color: "#6B7280 !important" }}
-                        />
-                      ) : (
-                        <KeyboardArrowDownIcon
-                          sx={{ color: "#6B7280 !important" }}
-                        />
-                      )
-                    ) : null}
-                  </ListItem>
-                </a>
-                <Collapse
+            {menuList &&
+              menuList.map((item) => (
+                <>
+                  <a
+                    href={item?.children ? "#" : `${item?.link}`}
+                    key={item?.label}
+                    className={pathname == `${item?.link}` ? "active" : ""}
+                    onClick={item?.children ? handleClick : null}
+                    style={{ color: item?.children ? "#6B7280" : "" }}
+                  >
+                    <ListItem>
+                      <ListItemIcon
+                        sx={{
+                          minWidth: "35px",
+                        }}
+                      >
+                        <img src={item?.icon} alt={item?.label} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={item?.label}
+                        secondary={item?.subtitle}
+                      />
+                      {item?.children ? (
+                        menuOpen ? (
+                          <KeyboardArrowUpIcon
+                            sx={{ color: "#6B7280 !important" }}
+                          />
+                        ) : (
+                          <KeyboardArrowDownIcon
+                            sx={{ color: "#6B7280 !important" }}
+                          />
+                        )
+                      ) : null}
+                    </ListItem>
+                  </a>
+                  {/* <Collapse
                   in={menuOpen}
                   orientation="vertical"
                   timeout="auto"
@@ -254,9 +381,12 @@ const SideBar = (props) => {
                       </ListItem>
                     </a>
                   ))}
-                </Collapse>
-              </>
-            ))}
+                </Collapse> */}
+                </>
+              ))}
+            {menuList && menuList?.length === 0 && (
+              <Typography p={1}>No Result&apos;s Found</Typography>
+            )}
           </List>
           {/* <Box>
             <IconButton edge="end" aria-label="menu" onClick={handleLogout}>
