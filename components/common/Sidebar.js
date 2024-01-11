@@ -227,7 +227,7 @@ const ListData = [
   {
     icon: "/img/icon/assessment-icon.svg",
     label: "Flashcard",
-    subtitle: "Create Assessment",
+    subtitle: "Create Flashcard",
     link: "",
     user_type: [
       {
@@ -244,7 +244,7 @@ const ListData = [
   {
     icon: "/img/icon/assessment-icon.svg",
     label: "AI Chatbot in LMS",
-    subtitle: "Create Assessment",
+    subtitle: "Start Using AI in LMS",
     link: "",
     user_type: [
       {
@@ -258,7 +258,7 @@ const ListData = [
   {
     icon: "/img/icon/assessment-icon.svg",
     label: "Curriculum Design",
-    subtitle: "Create Assessment",
+    subtitle: "Create Curriculum Design",
     link: "",
     user_type: [
       {
@@ -272,7 +272,7 @@ const ListData = [
   {
     icon: "/img/icon/assessment-icon.svg",
     label: "Quiz Generator in LMS",
-    subtitle: "Create Assessment",
+    subtitle: "Generate Quizzes in LMS",
     link: "",
     user_type: [
       {
@@ -289,7 +289,7 @@ const ListData = [
   {
     icon: "/img/icon/assessment-icon.svg",
     label: "LO Generator",
-    subtitle: "Create Assessment",
+    subtitle: "Generate LO",
     link: "",
     user_type: [
       {
@@ -303,7 +303,7 @@ const ListData = [
   {
     icon: "/img/icon/assessment-icon.svg",
     label: "Image to Text",
-    subtitle: "Create Assessment",
+    subtitle: "Generate Image to Text",
     link: "",
     user_type: [
       {
@@ -317,7 +317,7 @@ const ListData = [
   {
     icon: "/img/icon/assessment-icon.svg",
     label: "Copy Edit Workflow",
-    subtitle: "Create Assessment",
+    subtitle: "Copy Edit Workflow",
     link: "",
     user_type: [
       {
@@ -331,7 +331,7 @@ const ListData = [
   {
     icon: "/img/icon/assessment-icon.svg",
     label: "Summariz Workflow",
-    subtitle: "Create Assessment",
+    subtitle: "Summariz Workflow",
     link: "",
     user_type: [
       {
