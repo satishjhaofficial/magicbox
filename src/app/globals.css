@@ -106,6 +106,7 @@ a {
 #nav {
   overflow-y: auto;
   overflow-x: hidden;
+  padding-bottom: 66px;
 }
 
 #nav::-webkit-scrollbar {

@@ -109,6 +109,9 @@ const ListData = [
       {
         name: "teacher",
       },
+      {
+        name: "content",
+      },
     ],
   },
   {
@@ -123,6 +126,9 @@ const ListData = [
       {
         name: "teacher",
       },
+      {
+        name: "content",
+      },
     ],
   },
   {
@@ -135,7 +141,7 @@ const ListData = [
         name: "all",
       },
       {
-        name: "student",
+        name: "content",
       },
     ],
   },
@@ -163,7 +169,10 @@ const ListData = [
         name: "all",
       },
       {
-        name: "student",
+        name: "teacher",
+      },
+      {
+        name: "content",
       },
     ],
   },
@@ -177,7 +186,10 @@ const ListData = [
         name: "all",
       },
       {
-        name: "student",
+        name: "teacher",
+      },
+      {
+        name: "content",
       },
     ],
   },
@@ -191,7 +203,7 @@ const ListData = [
         name: "all",
       },
       {
-        name: "student",
+        name: "content",
       },
     ],
   },
@@ -205,7 +217,128 @@ const ListData = [
         name: "all",
       },
       {
+        name: "teacher",
+      },
+      {
+        name: "content",
+      },
+    ],
+  },
+  {
+    icon: "/img/icon/assessment-icon.svg",
+    label: "Flashcard",
+    subtitle: "Create Assessment",
+    link: "",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "teacher",
+      },
+      {
+        name: "content",
+      },
+    ],
+  },
+  {
+    icon: "/img/icon/assessment-icon.svg",
+    label: "AI Chatbot in LMS",
+    subtitle: "Create Assessment",
+    link: "",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
         name: "student",
+      },
+    ],
+  },
+  {
+    icon: "/img/icon/assessment-icon.svg",
+    label: "Curriculum Design",
+    subtitle: "Create Assessment",
+    link: "",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "content",
+      },
+    ],
+  },
+  {
+    icon: "/img/icon/assessment-icon.svg",
+    label: "Quiz Generator in LMS",
+    subtitle: "Create Assessment",
+    link: "",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "teacher",
+      },
+      {
+        name: "content",
+      },
+    ],
+  },
+  {
+    icon: "/img/icon/assessment-icon.svg",
+    label: "LO Generator",
+    subtitle: "Create Assessment",
+    link: "",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "content",
+      },
+    ],
+  },
+  {
+    icon: "/img/icon/assessment-icon.svg",
+    label: "Image to Text",
+    subtitle: "Create Assessment",
+    link: "",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "content",
+      },
+    ],
+  },
+  {
+    icon: "/img/icon/assessment-icon.svg",
+    label: "Copy Edit Workflow",
+    subtitle: "Create Assessment",
+    link: "",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "content",
+      },
+    ],
+  },
+  {
+    icon: "/img/icon/assessment-icon.svg",
+    label: "Summariz Workflow",
+    subtitle: "Create Assessment",
+    link: "",
+    user_type: [
+      {
+        name: "all",
+      },
+      {
+        name: "content",
       },
     ],
   },
