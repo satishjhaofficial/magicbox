@@ -18,6 +18,7 @@ import MuiDrawer from "@mui/material/Drawer";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MuiAppBar from "@mui/material/AppBar";
+import Link from "next/link";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Logout } from "@mui/icons-material";
 import { usePathname } from "next/navigation";
@@ -58,6 +59,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   flexWrap: "wrap",
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
+  minHeight: "111px !important",
 }));
 
 const AppBar = styled(MuiAppBar, {
@@ -462,7 +464,7 @@ const SideBar = (props) => {
             {menuList &&
               menuList.map((item) => (
                 <>
-                  <a
+                  <Link
                     href={item?.children ? "#" : `${item?.link}`}
                     key={item?.label}
                     className={pathname == `${item?.link}` ? "active" : ""}
@@ -493,7 +495,7 @@ const SideBar = (props) => {
                         )
                       ) : null}
                     </ListItem>
-                  </a>
+                  </Link>
                   {/* <Collapse
                   in={menuOpen}
                   orientation="vertical"

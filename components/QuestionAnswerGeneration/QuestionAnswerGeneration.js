@@ -132,7 +132,7 @@ const QuestionAnswerGeneration = () => {
                   values,
                 }) => (
                   <form onSubmit={handleSubmit}>
-                    <Box minHeight="30vh">
+                    <Box minHeight="25vh">
                       {!fileUrl && (
                         <TextField
                           id="outlined-basic"
@@ -275,7 +275,7 @@ const QuestionAnswerGeneration = () => {
               </Formik>
             </Grid>
             <Grid item xs={12}>
-              <Box minHeight="30vh" p={2}>
+              <Box minHeight="25vh" p={2}>
                 <Typography color="#a1a1a1">
                   AI generated result will appear here
                 </Typography>
