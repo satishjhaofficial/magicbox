@@ -30,7 +30,7 @@ a {
 }
 
 /*  */
-.blue-btn {
+body .blue-btn {
   color: rgb(var(--white));
   background: rgb(var(--purple));
   border: 1px solid rgb(var(--purple));
@@ -38,36 +38,36 @@ a {
   text-transform: capitalize;
   outline: none;
 }
-.blue-btn:hover {
+body .blue-btn:hover {
   background: rgb(var(--purple));
 }
-.upload-btn {
+body .upload-btn {
   color: #565656;
   border: 1px solid #565656;
   border-radius: 30px;
   text-transform: capitalize;
   outline: none !important;
 }
-.reset-btn {
+body .reset-btn {
   color: rgb(var(--purple));
   border: 0 !important;
   background: transparent !important;
   text-transform: capitalize;
   outline: none !important;
 }
-.border-bottom {
+body .border-bottom {
   border-bottom: 1px solid rgb(var(--border-bottom));
 }
-.placeholder-text {
+body .placeholder-text {
   color: rgb(var(--placeholder-color));
 }
-.textarea-heading {
+body .textarea-heading {
   color: rgb(var(--text-color));
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 8px;
 }
-.upload-preview-box {
+body .upload-preview-box {
   display: inline-flex;
   align-items: center;
   border-radius: 5px;
@@ -76,7 +76,7 @@ a {
   padding: 5px;
   margin-right: 8px;
 }
-.upload-preview-box p {
+body .upload-preview-box p {
   max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
@@ -84,7 +84,7 @@ a {
   font-size: 12px;
   margin: 8px 0;
 }
-.upload-preview-box img {
+body .upload-preview-box img {
   width: 30px;
   height: 30px;
 }
