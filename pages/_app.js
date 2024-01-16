@@ -12,6 +12,7 @@ const inter = Inter({
   display: "swap",
 });
 
+import "../src/app/theme.css";
 import "../src/app/globals.css";
 
 const theme = createTheme({
