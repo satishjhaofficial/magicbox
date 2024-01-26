@@ -11,6 +11,7 @@ import {
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik } from "formik";
+import axios from "axios";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 
 const Div = styled.div`
@@ -30,7 +31,13 @@ const Div = styled.div`
 `;
 
 const Summarization = () => {
+  const headers = {
+    "JSESSION-ID":
+      "3FCAE69246C4EF4C324AF55D171144DE32216E4301FA6AC2F3C4865EC3FA64F2",
+    "Tenant-URL": "https://mbx-staging.getmagicbox.com",
+  };
   const [fileUrl, setFileUrl] = useState(null);
+  const [result, setResult] = useState();
 
   return (
     <Div>
@@ -46,12 +53,25 @@ const Summarization = () => {
             <Grid item xs={12}>
               <Formik
                 initialValues={{
-                  upload_file: "",
-                  question: "",
+                  // upload_file: "",
+                  text: "",
+                  tenant_id: 1,
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
                   setSubmitting(true);
                   console.log(values);
+                  try {
+                    const { data } = await axios.post(
+                      "https://kea-ml-staging.getmagicbox.com/getSummariation",
+                      values,
+                      { headers }
+                    );
+                    setResult(data?.response);
+                    console.log(data);
+                  } catch (error) {
+                    console.log(error);
+                    alert(error?.response?.data?.response);
+                  }
                   setSubmitting(false);
                 }}
               >
@@ -66,21 +86,25 @@ const Summarization = () => {
                   <form onSubmit={handleSubmit}>
                     <Box minHeight="30vh">
                       {!fileUrl && (
-                        <TextField
-                          id="outlined-basic"
-                          className="no-border textarea-box"
-                          fullWidth
-                          variant="outlined"
-                          placeholder={`Enter or paste your text and press “Submit”`}
-                          value={values.question}
-                          required
-                          name="question"
-                          onChange={handleChange}
-                          multiline
-                          rows={20}
-                          inputProps={{ maxLength: 3000 }}
-                          sx={{ border: 0, outline: "none" }}
-                        />
+                        <Box className="textarea-box" p={2}>
+                          <Typography variant="h3" className="textarea-heading">
+                            Description box for summarization
+                          </Typography>
+                          <TextField
+                            id="outlined-basic"
+                            fullWidth
+                            variant="outlined"
+                            placeholder={`Enter or paste your text and press “Submit”`}
+                            value={values.text}
+                            required
+                            name="text"
+                            onChange={handleChange}
+                            multiline
+                            rows={20}
+                            inputProps={{ maxLength: 3000 }}
+                            sx={{ border: 0, outline: "none" }}
+                          />
+                        </Box>
                       )}
                       {fileUrl && (
                         <Box p={1}>
@@ -109,7 +133,7 @@ const Summarization = () => {
                               fontSize={12}
                               mx={1}
                             >
-                              {values.upload_file.name}
+                              {values?.upload_file?.name}
                             </Typography>
                             <IconButton
                               onClick={() => {
@@ -125,14 +149,14 @@ const Summarization = () => {
                     </Box>
                     <Box p={2} borderBottom="1px solid #8f8f8f">
                       <Box display="flex" justifyContent="space-between">
-                        {values?.question?.length > 0 ? (
+                        {values?.text?.length > 0 ? (
                           <Typography fontSize={12}>
                             {" "}
-                            {values?.question?.length}/3000 Characters
+                            {values?.text?.length}/3000 Characters
                           </Typography>
                         ) : (
                           <Box>
-                            <input
+                            {/* <input
                               accept="image/*"
                               style={{ display: "none" }}
                               id="upload-button-file"
@@ -163,7 +187,7 @@ const Summarization = () => {
                               >
                                 Upload File
                               </Button>
-                            </label>
+                            </label> */}
                           </Box>
                         )}
                         <Box>
@@ -207,10 +231,21 @@ const Summarization = () => {
               </Formik>
             </Grid>
             <Grid item xs={12}>
-              <Box minHeight="30vh" p={2}>
-                <Typography color="#a1a1a1">
-                  AI generated result will appear here
-                </Typography>
+              <Box p={2}>
+                <Box minHeight="25vh" className="result-box">
+                  {result && result ? (
+                    <>
+                      <Typography mb={2} fontWeight={600}>
+                        Summarized Content
+                      </Typography>
+                      <Typography> {result}</Typography>
+                    </>
+                  ) : (
+                    <Typography color="#a1a1a1">
+                      AI generated result will appear here
+                    </Typography>
+                  )}
+                </Box>
               </Box>
             </Grid>
           </Grid>

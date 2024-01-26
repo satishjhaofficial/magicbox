@@ -41,6 +41,11 @@ body .blue-btn {
 body .blue-btn:hover {
   background: rgb(var(--purple));
 }
+body .blue-btn.Mui-disabled {
+  color: rgb(var(--white)) !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+}
 body .upload-btn {
   color: #565656;
   border: 1px solid #565656;
@@ -87,6 +92,10 @@ body .upload-preview-box p {
 body .upload-preview-box img {
   width: 30px;
   height: 30px;
+}
+.result-box {
+  max-height: 25vh;
+  overflow-y: auto;
 }
 /* Sidebar */
 #nav {
@@ -171,15 +180,15 @@ body .side-toggle-btn {
   transform: translate(14px, -9px) scale(0.75);
 }
 .textarea-box .MuiInputBase-root {
-  padding: 0;
-  border: 0 !important;
+  padding: 5px 10px;
+  border-radius: 2px;
+  border: 1px solid rgb(var(--border-color));
+  background-color: #fff;
 }
 .textarea-box textarea {
   max-height: 20vh;
-  overflow-y: auto;
-  border-radius: 2px;
+  overflow-y: auto !important;
   resize: none;
-  border: 1px solid rgb(var(--border-color));
   padding: 5px 10px;
   background-color: rgb(var(--white));
   outline: none !important;
@@ -190,14 +199,17 @@ body .side-toggle-btn {
   cursor: pointer;
 }
 
-.textarea-box textarea::-webkit-scrollbar {
+.textarea-box textarea::-webkit-scrollbar,
+.result-box::-webkit-scrollbar {
   width: 3px;
 }
 
-.textarea-box textarea::-webkit-scrollbar-track {
+.textarea-box textarea::-webkit-scrollbar-track,
+.result-boxa::-webkit-scrollbar-track {
   background: #fff;
 }
-.textarea-box textarea::-webkit-scrollbar-thumb {
+.textarea-box textarea::-webkit-scrollbar-thumb,
+.result-box::-webkit-scrollbar-thumb {
   background: #888;
 }
 

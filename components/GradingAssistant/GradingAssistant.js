@@ -12,6 +12,7 @@ import styled from "@emotion/styled";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import CloseIcon from "@mui/icons-material/Close";
+import axios from "axios";
 import { Formik } from "formik";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import FormControl from "@mui/material/FormControl";
@@ -34,6 +35,14 @@ const Div = styled.div`
 `;
 
 const GradingAssistant = () => {
+  const headers = {
+    "JSESSION-ID":
+      "3FCAE69246C4EF4C324AF55D171144DE32216E4301FA6AC2F3C4865EC3FA64F2",
+    "Tenant-URL": "https://mbx-staging.getmagicbox.com",
+  };
+  const [result, setResult] = useState([]);
+
+  console.log(result);
   return (
     <Div>
       <Box display="flex" alignItems="center" mb={2}>
@@ -44,42 +53,57 @@ const GradingAssistant = () => {
       </Box>
       <Box className="conetnt-boxin" mt={2}>
         <Box>
-          <Grid container>
-            <Grid item xs={12}>
-              <Box borderBottom="1px solid #BEBEBE" px={2} py={1}>
-                <Typography>
-                  Question : What is personalised Learning ?
-                </Typography>
-              </Box>
-              <Formik
-                initialValues={{
-                  question: "",
-                }}
-                onSubmit={async (values, { setSubmitting }) => {
-                  setSubmitting(true);
-                  console.log(values);
-                  setSubmitting(false);
-                }}
-              >
-                {({
-                  handleSubmit,
-                  isSubmitting,
-                  setFieldValue,
-                  handleChange,
-                  resetForm,
+          <Formik
+            initialValues={{
+              question: "What is personalised Learning ?",
+              answer: "",
+              tenant_id: 1,
+            }}
+            onSubmit={async (values, { setSubmitting }) => {
+              setSubmitting(true);
+              console.log(values);
+              try {
+                const { data } = await axios.post(
+                  "https://kea-ml-staging.getmagicbox.com/getGrading",
                   values,
-                }) => (
-                  <form onSubmit={handleSubmit}>
-                    <Box minHeight="30vh">
+                  { headers }
+                );
+                setResult(data?.response);
+                console.log(data);
+                console.log(result);
+              } catch (error) {
+                console.log(error);
+                alert(error?.response?.data?.response);
+              }
+              setSubmitting(false);
+            }}
+          >
+            {({
+              handleSubmit,
+              isSubmitting,
+              handleChange,
+              resetForm,
+              values,
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <Grid container>
+                  <Grid item xs={12}>
+                    <Box borderBottom="1px solid #BEBEBE" px={2} py={1}>
+                      <Typography>
+                        Question : What is personalised Learning ?
+                      </Typography>
+                    </Box>
+
+                    <Box minHeight="30vh" px={2} pt={2}>
                       <TextField
                         id="outlined-basic"
                         className="no-border textarea-box"
                         fullWidth
                         variant="outlined"
                         placeholder={`Enter or paste your Answer`}
-                        value={values.question}
+                        value={values.answer}
                         required
-                        name="question"
+                        name="answer"
                         onChange={handleChange}
                         multiline
                         rows={20}
@@ -89,10 +113,10 @@ const GradingAssistant = () => {
                     </Box>
                     <Box p={2} borderBottom="1px solid #8f8f8f">
                       <Box display="flex" justifyContent="space-between">
-                        {values?.question?.length > 0 ? (
+                        {values?.answer?.length > 0 ? (
                           <Typography fontSize={12}>
                             {" "}
-                            {values?.question?.length}/3000 Characters
+                            {values?.answer?.length}/3000 Characters
                           </Typography>
                         ) : (
                           <Box></Box>
@@ -131,18 +155,82 @@ const GradingAssistant = () => {
                         </Box>
                       </Box>
                     </Box>
-                  </form>
-                )}
-              </Formik>
-            </Grid>
-            <Grid item xs={12}>
-              <Box minHeight="30vh" p={2}>
-                <Typography color="#a1a1a1">
-                  AI generated result will appear here
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box p={2}>
+                      <Box minHeight="25vh" className="result-box">
+                        {result && result.length > 0 ? (
+                          <>
+                            <Typography mb={2} fontWeight={500}>
+                              AI Generated Result
+                            </Typography>
+                            <Typography mb={1} fontWeight={600}>
+                              1. {values.question}
+                            </Typography>
+                            <Typography mb={1}>
+                              <span style={{ fontWeight: 600 }}>
+                                Submitted Answer :
+                              </span>{" "}
+                              {values.answer}
+                            </Typography>
+                            <Box
+                              display="inline-block"
+                              p={1}
+                              bgcolor="#fff"
+                              mr={2}
+                            >
+                              Contextual Similarity :
+                              <span style={{ fontWeight: 600 }}>
+                                {result[3].replace(
+                                  "Contextual Similarity:",
+                                  ""
+                                )}
+                              </span>
+                            </Box>
+                            <Box
+                              display="inline-block"
+                              p={1}
+                              bgcolor="#fff"
+                              mr={2}
+                            >
+                              Spelling :
+                              <span style={{ fontWeight: 600 }}>
+                                {result[2].replace(
+                                  "Percentage of Spelling mistakes:",
+                                  ""
+                                )}
+                              </span>
+                            </Box>
+                            <Box
+                              display="inline-block"
+                              p={1}
+                              bgcolor="#fff"
+                              mr={2}
+                            >
+                              Grammer sentence structure :
+                              <span style={{ fontWeight: 600 }}>
+                                {result[1].replace("Grammar Score:", "")}
+                              </span>
+                            </Box>
+                            <Typography mt={1}>
+                              <span style={{ fontWeight: 600 }}>
+                                Ideal Answer :
+                              </span>{" "}
+                              {result[0].replace("Ideal Answer:", "")}
+                            </Typography>
+                          </>
+                        ) : (
+                          <Typography color="#a1a1a1">
+                            AI generated result will appear here
+                          </Typography>
+                        )}
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </form>
+            )}
+          </Formik>
         </Box>
       </Box>
     </Div>

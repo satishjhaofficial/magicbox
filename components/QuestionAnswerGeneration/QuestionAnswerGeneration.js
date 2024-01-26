@@ -14,6 +14,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
+import axios from "axios";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import CloseIcon from "@mui/icons-material/Close";
@@ -23,16 +24,23 @@ import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import Select from "@mui/material/Select";
 
 const QuestionAnswerGeneration = () => {
-  const [userSelect, setUserSelect] = useState("");
-  const [questionCount, setQuestionCount] = useState("2");
+  const headers = {
+    "JSESSION-ID":
+      "3FCAE69246C4EF4C324AF55D171144DE32216E4301FA6AC2F3C4865EC3FA64F2",
+    "Tenant-URL": "https://mbx-staging.getmagicbox.com",
+  };
+
+  const [userSelect, setUserSelect] = useState("single choice");
+  const [questionCount, setQuestionCount] = useState(2);
   const [fileUrl, setFileUrl] = useState(null);
-  const [radioValue, setRadioValue] = useState("with_answer");
+  const [radioValue, setRadioValue] = useState("with answer");
+  const [result, setResult] = useState();
 
   const handleRadio = (event) => {
     setRadioValue(event.target.value);
   };
 
-  const handleChange = (event) => {
+  const handleSelectChange = (event) => {
     setUserSelect(event.target.value);
   };
 
@@ -63,12 +71,32 @@ const QuestionAnswerGeneration = () => {
             <Grid item xs={12}>
               <Formik
                 initialValues={{
-                  upload_file: "",
-                  question: "",
+                  // upload_file: "",
+                  text: "",
+                  question_type: userSelect,
+                  answer_type: radioValue,
+                  num_questions: questionCount || 1,
+                  tenant_id: 1,
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
                   setSubmitting(true);
+                  values.answer_type = radioValue;
+                  values.num_questions = questionCount || 1;
+                  values.question_type = userSelect;
+
                   console.log(values);
+                  try {
+                    const { data } = await axios.post(
+                      "https://kea-ml-staging.getmagicbox.com/GenerateQA",
+                      values,
+                      { headers }
+                    );
+                    setResult(data?.response);
+                    console.log(data);
+                  } catch (error) {
+                    console.log(error);
+                    alert(error?.response?.data?.response);
+                  }
                   setSubmitting(false);
                 }}
               >
@@ -92,9 +120,9 @@ const QuestionAnswerGeneration = () => {
                             fullWidth
                             variant="outlined"
                             placeholder={`Enter or paste your text and press "Generate Questions"`}
-                            value={values.question}
+                            value={values.text}
                             required
-                            name="question"
+                            name="text"
                             onChange={handleChange}
                             multiline
                             rows={15}
@@ -135,12 +163,12 @@ const QuestionAnswerGeneration = () => {
                               name="radio-buttons-group"
                             >
                               <FormControlLabel
-                                value="with_answer"
+                                value="with answer"
                                 control={<Radio />}
                                 label="With Answer"
                               />
                               <FormControlLabel
-                                value="without_answer"
+                                value="without answer"
                                 control={<Radio />}
                                 label="Without Answer"
                               />
@@ -157,7 +185,7 @@ const QuestionAnswerGeneration = () => {
                             className="count-btn-box"
                           >
                             <RemoveCircleRoundedIcon
-                              onClick={(e) =>
+                              onClick={() =>
                                 setQuestionCount(questionCount - 1)
                               }
                             />
@@ -173,7 +201,7 @@ const QuestionAnswerGeneration = () => {
                               />
                             </Box>
                             <AddCircleRoundedIcon
-                              onClick={(e) =>
+                              onClick={() =>
                                 setQuestionCount(questionCount + 1)
                               }
                             />
@@ -188,19 +216,22 @@ const QuestionAnswerGeneration = () => {
                               Select Choice
                             </InputLabel>
                             <Select
-                              labelId="demo-simple-select-label"
                               id="demo-simple-select"
                               value={userSelect}
                               label="Select Choice"
                               size="small"
-                              onChange={handleChange}
+                              onChange={handleSelectChange}
                             >
-                              <MenuItem value="all_users">
+                              <MenuItem value="single choice">
                                 Single Choice
                               </MenuItem>
-                              <MenuItem value={20}>Multiple Choice</MenuItem>
-                              <MenuItem value={30}>Fill in the blank</MenuItem>
-                              <MenuItem value={30}>True/False</MenuItem>
+                              <MenuItem value="multiple choice">
+                                Multiple Choice
+                              </MenuItem>
+                              <MenuItem value="fill in the blank">
+                                Fill in the blank
+                              </MenuItem>
+                              <MenuItem value="true/false">True/False</MenuItem>
                             </Select>
                           </FormControl>
                         </Grid>
@@ -208,14 +239,13 @@ const QuestionAnswerGeneration = () => {
                     </Box>
                     <Box p={2} className="border-bottom">
                       <Box display="flex" justifyContent="space-between">
-                        {values?.question?.length > 0 ? (
+                        {values?.text?.length > 0 ? (
                           <Typography fontSize={12}>
-                            {" "}
-                            {values?.question?.length}/3000 Characters
+                            {values?.text?.length}/3000 Characters
                           </Typography>
                         ) : (
                           <Box>
-                            <input
+                            {/* <input
                               accept="image/*"
                               style={{ display: "none" }}
                               id="upload-button-file"
@@ -240,7 +270,7 @@ const QuestionAnswerGeneration = () => {
                               >
                                 Upload File
                               </Button>
-                            </label>
+                            </label> */}
                           </Box>
                         )}
                         <Box>
@@ -251,6 +281,7 @@ const QuestionAnswerGeneration = () => {
                               resetForm();
                               setFieldValue("upload_file", "");
                               setFileUrl(null);
+                              setResult(null);
                             }}
                           >
                             Reset
@@ -271,10 +302,21 @@ const QuestionAnswerGeneration = () => {
               </Formik>
             </Grid>
             <Grid item xs={12}>
-              <Box minHeight="25vh" p={2}>
-                <Typography className="placeholder-text">
-                  AI generated result will appear here
-                </Typography>
+              <Box p={2}>
+                <Box minHeight="25vh" className="result-box">
+                  {result && result ? (
+                    <>
+                      <Typography mb={2} fontWeight={600}>
+                        AI generated result
+                      </Typography>
+                      <Typography> {result}</Typography>
+                    </>
+                  ) : (
+                    <Typography className="placeholder-text">
+                      AI generated result will appear here
+                    </Typography>
+                  )}
+                </Box>
               </Box>
             </Grid>
           </Grid>

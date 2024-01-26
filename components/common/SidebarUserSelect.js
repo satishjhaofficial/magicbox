@@ -80,7 +80,6 @@ const SidebarUserSelect = ({
       <Box sx={{ minWidth: 120 }} display={searchOpen ? "none" : "flex"}>
         <FormControl fullWidth className="sidebar-select">
           <TextField
-            labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={userSelect}
             label="Select User"

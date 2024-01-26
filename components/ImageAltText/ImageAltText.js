@@ -1,16 +1,8 @@
 import { useEffect, useState } from "react";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import {
-  Box,
-  Typography,
-  Grid,
-  TextField,
-  Button,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, Grid, Button, IconButton } from "@mui/material";
 import styled from "@emotion/styled";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
+import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik } from "formik";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
@@ -33,7 +25,14 @@ const Div = styled.div`
 `;
 
 const ImageAltText = () => {
+  const headers = {
+    "JSESSION-ID":
+      "3FCAE69246C4EF4C324AF55D171144DE32216E4301FA6AC2F3C4865EC3FA64F2",
+    "Tenant-URL": "https://mbx-staging.getmagicbox.com",
+  };
   const [files, setFiles] = useState();
+  const [result, setResult] = useState();
+  const [fileUrl, setFileUrl] = useState(null);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
       "image/jpeg": [],
@@ -44,6 +43,7 @@ const ImageAltText = () => {
     },
     multiple: false,
     onDrop: (acceptedFiles) => {
+      setFileUrl(acceptedFiles);
       setFiles(
         acceptedFiles.map((files) =>
           Object.assign(files, {
@@ -54,7 +54,8 @@ const ImageAltText = () => {
     },
   });
 
-  console.log(files);
+  console.log(fileUrl);
+
   return (
     <Div>
       <Box display="flex" alignItems="center" mb={2}>
@@ -70,21 +71,39 @@ const ImageAltText = () => {
             <Grid item xs={12}>
               <Formik
                 initialValues={{
-                  question: "",
+                  img_url: "",
+                  tenant_id: 1,
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
-                  setSubmitting(true);
-                  console.log(values);
-                  setSubmitting(false);
+                  console.log(fileUrl);
+                  if (fileUrl) {
+                    values.img_url = fileUrl;
+                    setSubmitting(true);
+                    console.log(values);
+                    try {
+                      const { data } = await axios.post(
+                        "https://kea-ml-staging.getmagicbox.com/ImgtoText",
+                        values,
+                        { headers }
+                      );
+                      setResult(data?.response);
+                      console.log(data);
+                    } catch (error) {
+                      console.log(error);
+                      alert(error?.response?.data?.response);
+                    }
+                    setSubmitting(false);
+                  } else {
+                    alert("Please Upload Image");
+                  }
                 }}
               >
                 {({
                   handleSubmit,
                   isSubmitting,
-                  setFieldValue,
-                  handleChange,
                   resetForm,
                   values,
+                  setFieldValue,
                 }) => (
                   <form onSubmit={handleSubmit}>
                     <Box minHeight="30vh">
@@ -96,7 +115,17 @@ const ImageAltText = () => {
                           {...getRootProps()}
                           className={isDragActive ? "dropboxactive" : "dropbox"}
                         >
-                          <input {...getInputProps()} />
+                          <input
+                            name="img_url"
+                            {...getInputProps()}
+                            required
+                            onChange={(e) => {
+                              setFieldValue(
+                                "img_url",
+                                e.currentTarget.files[0]
+                              );
+                            }}
+                          />
                           <Typography>
                             Drag or Upload your own images
                           </Typography>{" "}
@@ -190,7 +219,7 @@ const ImageAltText = () => {
                             type="submit"
                             disabled={isSubmitting}
                           >
-                            Generate Questions
+                            Generate
                           </Button>
                         </Box>
                       </Box>
