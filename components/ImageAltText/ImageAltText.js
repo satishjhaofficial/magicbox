@@ -7,6 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Formik } from "formik";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import { useDropzone } from "react-dropzone";
+import { objectToFormDate } from "object-to-formdata";
 
 const Div = styled.div`
   .conetnt-boxin {
@@ -81,16 +82,22 @@ const ImageAltText = () => {
                     setSubmitting(true);
                     console.log(values);
                     try {
+                      const formData = objectToFormDate(values);
                       const { data } = await axios.post(
                         "https://kea-ml-staging.getmagicbox.com/ImgtoText",
-                        values,
+                        formData,
                         { headers }
                       );
                       setResult(data?.response);
                       console.log(data);
                     } catch (error) {
                       console.log(error);
-                      alert(error?.response?.data?.response);
+                      if (error?.response?.status === 401) {
+                        window.location.href =
+                          "https://mbx-staging.getmagicbox.com/login.htm?tenant=Magic";
+                      } else {
+                        alert(error?.response?.data?.response);
+                      }
                     }
                     setSubmitting(false);
                   } else {

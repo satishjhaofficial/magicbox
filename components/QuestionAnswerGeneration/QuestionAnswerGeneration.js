@@ -95,7 +95,12 @@ const QuestionAnswerGeneration = () => {
                     console.log(data);
                   } catch (error) {
                     console.log(error);
-                    alert(error?.response?.data?.response);
+                    if (error?.response?.status === 401) {
+                      window.location.href =
+                        "https://mbx-staging.getmagicbox.com/login.htm?tenant=Magic";
+                    } else {
+                      alert(error?.response?.data?.response);
+                    }
                   }
                   setSubmitting(false);
                 }}
