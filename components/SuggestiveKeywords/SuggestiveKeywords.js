@@ -148,6 +148,7 @@ const SuggestiveKeywords = () => {
                               onClick={() => {
                                 setFieldValue("upload_file", "");
                                 setFileUrl(null);
+                                setResult(null);
                               }}
                             >
                               <CloseIcon />
@@ -212,6 +213,7 @@ const SuggestiveKeywords = () => {
                               resetForm();
                               setFieldValue("upload_file", "");
                               setFileUrl(null);
+                              setResult(null);
                             }}
                           >
                             Reset

@@ -7,7 +7,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Formik } from "formik";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import { useDropzone } from "react-dropzone";
-import { objectToFormDate } from "object-to-formdata";
+import { objectToFormData } from "object-to-formdata";
 
 const Div = styled.div`
   .conetnt-boxin {
@@ -28,7 +28,7 @@ const Div = styled.div`
 const ImageAltText = () => {
   const headers = {
     "JSESSION-ID":
-      "3FCAE69246C4EF4C324AF55D171144DE32216E4301FA6AC2F3C4865EC3FA64F2",
+      "3B38CD831E51238A47A12268079536562350DAA78B052D481D9394042DA6FEFD",
     "Tenant-URL": "https://mbx-staging.getmagicbox.com",
   };
   const [files, setFiles] = useState();
@@ -44,7 +44,7 @@ const ImageAltText = () => {
     },
     multiple: false,
     onDrop: (acceptedFiles) => {
-      setFileUrl(acceptedFiles);
+      setFileUrl(acceptedFiles[0]);
       setFiles(
         acceptedFiles.map((files) =>
           Object.assign(files, {
@@ -72,19 +72,21 @@ const ImageAltText = () => {
             <Grid item xs={12}>
               <Formik
                 initialValues={{
-                  img_url: "",
+                  image: "",
                   tenant_id: 1,
                 }}
                 onSubmit={async (values, { setSubmitting }) => {
                   console.log(fileUrl);
                   if (fileUrl) {
-                    values.img_url = fileUrl;
+                    values.image = fileUrl;
                     setSubmitting(true);
                     console.log(values);
                     try {
-                      const formData = objectToFormDate(values);
+                      const formData = new FormData();
+                      formData.append("image", fileUrl);
+                      formData.append("tenant_id", 1);
                       const { data } = await axios.post(
-                        "https://kea-ml-staging.getmagicbox.com/ImgtoText",
+                        "https://kea-ml-staging.getmagicbox.com/ImgDescription",
                         formData,
                         { headers }
                       );
@@ -123,14 +125,11 @@ const ImageAltText = () => {
                           className={isDragActive ? "dropboxactive" : "dropbox"}
                         >
                           <input
-                            name="img_url"
+                            name="image"
                             {...getInputProps()}
                             required
                             onChange={(e) => {
-                              setFieldValue(
-                                "img_url",
-                                e.currentTarget.files[0]
-                              );
+                              setFieldValue("image", e.currentTarget.files[0]);
                             }}
                           />
                           <Typography>
@@ -186,6 +185,8 @@ const ImageAltText = () => {
                             <IconButton
                               onClick={() => {
                                 setFiles(null);
+                                setFileUrl(null);
+                                setResult(null);
                               }}
                             >
                               <CloseIcon />
@@ -208,6 +209,8 @@ const ImageAltText = () => {
                             }}
                             onClick={() => {
                               resetForm();
+                              setFileUrl(null);
+                              setResult(null);
                             }}
                           >
                             Reset
@@ -236,10 +239,21 @@ const ImageAltText = () => {
               </Formik>
             </Grid>
             <Grid item xs={12}>
-              <Box minHeight="30vh" p={2}>
-                <Typography color="#a1a1a1">
-                  AI generated result will appear here
-                </Typography>
+              <Box p={2}>
+                <Box minHeight="25vh" className="result-box">
+                  {result && result ? (
+                    <>
+                      <Typography mb={2} fontWeight={600}>
+                        AI generated result
+                      </Typography>
+                      <Typography> {result}</Typography>
+                    </>
+                  ) : (
+                    <Typography className="placeholder-text">
+                      AI generated result will appear here
+                    </Typography>
+                  )}
+                </Box>
               </Box>
             </Grid>
           </Grid>

@@ -33,7 +33,7 @@ const Div = styled.div`
 const Summarization = () => {
   const headers = {
     "JSESSION-ID":
-      "3FCAE69246C4EF4C324AF55D171144DE32216E4301FA6AC2F3C4865EC3FA64F2",
+      "3B38CD831E51238A47A12268079536562350DAA78B052D481D9394042DA6FEFD",
     "Tenant-URL": "https://mbx-staging.getmagicbox.com",
   };
   const [fileUrl, setFileUrl] = useState(null);
@@ -208,6 +208,7 @@ const Summarization = () => {
                               resetForm();
                               setFieldValue("upload_file", "");
                               setFileUrl(null);
+                              setResult(null);
                             }}
                           >
                             Reset

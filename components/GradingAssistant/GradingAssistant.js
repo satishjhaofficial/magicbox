@@ -37,7 +37,7 @@ const Div = styled.div`
 const GradingAssistant = () => {
   const headers = {
     "JSESSION-ID":
-      "3FCAE69246C4EF4C324AF55D171144DE32216E4301FA6AC2F3C4865EC3FA64F2",
+      "3B38CD831E51238A47A12268079536562350DAA78B052D481D9394042DA6FEFD",
     "Tenant-URL": "https://mbx-staging.getmagicbox.com",
   };
   const [result, setResult] = useState([]);
@@ -93,10 +93,18 @@ const GradingAssistant = () => {
               <form onSubmit={handleSubmit}>
                 <Grid container>
                   <Grid item xs={12}>
-                    <Box borderBottom="1px solid #BEBEBE" px={2} py={1}>
-                      <Typography>
-                        Question : What is personalised Learning ?
-                      </Typography>
+                    <Box borderBottom="1px solid #BEBEBE" px={2} py={2}>
+                      <TextField
+                        name="question"
+                        label="question"
+                        value={values.question}
+                        onChange={handleChange}
+                        required
+                        variant="outlined"
+                        fullWidth
+                        size="small"
+                        sx={{ backgroundColor: "#fff" }}
+                      />
                     </Box>
 
                     <Box minHeight="30vh" px={2} pt={2}>
@@ -137,6 +145,7 @@ const GradingAssistant = () => {
                             }}
                             onClick={() => {
                               resetForm();
+                              setResult(null);
                             }}
                           >
                             Reset
