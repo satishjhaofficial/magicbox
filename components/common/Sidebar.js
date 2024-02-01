@@ -78,7 +78,7 @@ const Drawer = styled(MuiDrawer, {
 
 const ListData = [
   {
-    icon: "/img/icon/question-icon.svg",
+    icon: `${process.env.NEXT_PUBLIC_BASE_URL}question-icon.svg`,
     label: "Question & Answer Generation",
     subtitle: "Generate Question & Answer",
     link: "/",

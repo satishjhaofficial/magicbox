@@ -59,6 +59,7 @@ const QuestionAnswerGeneration = () => {
 
   return (
     <Box>
+      {process.env.NEXT_PUBLIC_SESSION_ID}
       <Box display="flex" alignItems="center" mb={2}>
         <InfoOutlinedIcon fontSize="12px" />
         <Typography ml={1} fontSize={14}>
