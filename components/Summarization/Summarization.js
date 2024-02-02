@@ -32,8 +32,7 @@ const Div = styled.div`
 
 const Summarization = () => {
   const headers = {
-    "JSESSION-ID":
-      "3B38CD831E51238A47A12268079536562350DAA78B052D481D9394042DA6FEFD",
+    "JSESSION-ID": `${sessionStorage.getItem("JSESSIONID")}`,
     "Tenant-URL": "https://mbx-staging.getmagicbox.com",
   };
   const [fileUrl, setFileUrl] = useState(null);

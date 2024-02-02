@@ -36,8 +36,7 @@ const Div = styled.div`
 
 const SuggestiveKeywords = () => {
   const headers = {
-    "JSESSION-ID":
-      "3FCAE69246C4EF4C324AF55D171144DE32216E4301FA6AC2F3C4865EC3FA64F2",
+    "JSESSION-ID": `${sessionStorage.getItem("JSESSIONID")}`,
     "Tenant-URL": "https://mbx-staging.getmagicbox.com",
   };
   const [fileUrl, setFileUrl] = useState(null);
