@@ -57,6 +57,7 @@ const QuestionAnswerGeneration = () => {
         <Typography ml={1} fontSize={14}>
           AI technology that automatically generates questions and answers
         </Typography>
+        {process.env.NEXT_PUBLIC_TENANT_URL}
       </Box>
       <Box className="conetnt-boxin" mt={2}>
         <Box>

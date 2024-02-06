@@ -8,13 +8,13 @@ const Token = () => {
 
 const headers = {
   "JSESSION-ID": `${Token}`,
-  "Tenant-URL": `${process.env.NEXT_PUBLIC_TENANT_URL}`,
+  "Tenant-URL": `${process.env.TENANT_URL}`,
 };
 
 //Post Form Data
 export const postQuestionAnswer = async (data) => {
   return axios
-    .post(`${process.env.NEXT_PUBLIC_BASE_URL}GenerateQA`, data, {
+    .post(`${process.env.NEXT_PUBLIC_API_URL}GenerateQA`, data, {
       headers,
     })
     .then((res) => {
