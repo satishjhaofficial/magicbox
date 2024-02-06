@@ -9,14 +9,10 @@ import {
   IconButton,
 } from "@mui/material";
 import styled from "@emotion/styled";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
+import { postGradingAssistant } from "@/app/api";
 import { Formik } from "formik";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 
 const Div = styled.div`
   .conetnt-boxin {
@@ -62,22 +58,17 @@ const GradingAssistant = () => {
               setSubmitting(true);
               console.log(values);
               try {
-                const { data } = await axios.post(
-                  "https://kea-ml-staging.getmagicbox.com/getGrading",
-                  values,
-                  { headers }
-                );
-                setResult(data?.response);
+                const data = await postGradingAssistant(values);
                 console.log(data);
-                console.log(result);
+                if (data?.response?.status === 401) {
+                  window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
+                } else if (data?.response?.status === 200) {
+                  setResult(data?.response);
+                } else {
+                  alert(data?.response?.data?.response);
+                }
               } catch (error) {
                 console.log(error);
-                if (error?.response?.status === 401) {
-                  window.location.href =
-                    "https://mbx-staging.getmagicbox.com/login.htm?tenant=Magic";
-                } else {
-                  alert(error?.response?.data?.response);
-                }
               }
               setSubmitting(false);
             }}

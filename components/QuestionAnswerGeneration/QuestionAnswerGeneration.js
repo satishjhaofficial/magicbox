@@ -14,7 +14,6 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import axios from "axios";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import CloseIcon from "@mui/icons-material/Close";
@@ -57,7 +56,6 @@ const QuestionAnswerGeneration = () => {
         <Typography ml={1} fontSize={14}>
           AI technology that automatically generates questions and answers
         </Typography>
-        {process.env.NEXT_PUBLIC_TENANT_URL}
       </Box>
       <Box className="conetnt-boxin" mt={2}>
         <Box>

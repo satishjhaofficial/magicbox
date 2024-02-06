@@ -11,7 +11,7 @@ import {
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik } from "formik";
-import axios from "axios";
+import { postSummarization } from "@/app/api";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 
 const Div = styled.div`
@@ -31,10 +31,6 @@ const Div = styled.div`
 `;
 
 const Summarization = () => {
-  const headers = {
-    "JSESSION-ID": `${sessionStorage.getItem("JSESSIONID")}`,
-    "Tenant-URL": "https://mbx-staging.getmagicbox.com",
-  };
   const [fileUrl, setFileUrl] = useState(null);
   const [result, setResult] = useState();
 
@@ -60,21 +56,17 @@ const Summarization = () => {
                   setSubmitting(true);
                   console.log(values);
                   try {
-                    const { data } = await axios.post(
-                      "https://kea-ml-staging.getmagicbox.com/getSummariation",
-                      values,
-                      { headers }
-                    );
-                    setResult(data?.response);
+                    const data = await postSummarization(values);
                     console.log(data);
+                    if (data?.response?.status === 401) {
+                      window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
+                    } else if (data?.response?.status === 200) {
+                      setResult(data?.response);
+                    } else {
+                      alert(data?.response?.data?.response);
+                    }
                   } catch (error) {
                     console.log(error);
-                    if (error?.response?.status === 401) {
-                      window.location.href =
-                        "https://mbx-staging.getmagicbox.com/login.htm?tenant=Magic";
-                    } else {
-                      alert(error?.response?.data?.response);
-                    }
                   }
                   setSubmitting(false);
                 }}

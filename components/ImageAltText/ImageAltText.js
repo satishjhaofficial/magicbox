@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { Box, Typography, Grid, Button, IconButton } from "@mui/material";
 import styled from "@emotion/styled";
-import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik } from "formik";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 import { useDropzone } from "react-dropzone";
-import { objectToFormData } from "object-to-formdata";
+import { postImageAltText } from "@/app/api";
 
 const Div = styled.div`
   .conetnt-boxin {
@@ -26,10 +25,6 @@ const Div = styled.div`
 `;
 
 const ImageAltText = () => {
-  const headers = {
-    "JSESSION-ID": `${sessionStorage.getItem("JSESSIONID")}`,
-    "Tenant-URL": "https://mbx-staging.getmagicbox.com",
-  };
   const [files, setFiles] = useState();
   const [result, setResult] = useState();
   const [fileUrl, setFileUrl] = useState(null);
@@ -84,21 +79,17 @@ const ImageAltText = () => {
                       const formData = new FormData();
                       formData.append("image", fileUrl);
                       formData.append("tenant_id", 1);
-                      const { data } = await axios.post(
-                        "https://kea-ml-staging.getmagicbox.com/ImgDescription",
-                        formData,
-                        { headers }
-                      );
-                      setResult(data?.response);
+                      const data = await postImageAltText(values);
                       console.log(data);
+                      if (data?.response?.status === 401) {
+                        window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
+                      } else if (data?.response?.status === 200) {
+                        setResult(data?.response);
+                      } else {
+                        alert(data?.response?.data?.response);
+                      }
                     } catch (error) {
                       console.log(error);
-                      if (error?.response?.status === 401) {
-                        window.location.href =
-                          "https://mbx-staging.getmagicbox.com/login.htm?tenant=Magic";
-                      } else {
-                        alert(error?.response?.data?.response);
-                      }
                     }
                     setSubmitting(false);
                   } else {
