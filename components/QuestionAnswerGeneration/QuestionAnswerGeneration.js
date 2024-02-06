@@ -85,7 +85,7 @@ const QuestionAnswerGeneration = () => {
                     } else if (data?.response?.status === 200) {
                       setResult(data?.response);
                     } else {
-                      alert(error?.response?.data?.response);
+                      alert(data?.response?.data?.response);
                     }
                   } catch (error) {
                     console.log(error);

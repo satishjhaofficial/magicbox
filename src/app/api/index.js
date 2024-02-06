@@ -1,7 +1,13 @@
 const axios = require("axios");
+import useSessionStorage from "./SessionId";
+
+const Token = () => {
+  const id = useSessionStorage("JSESSIONID");
+  return id;
+};
 
 const headers = {
-  "JSESSION-ID": `${sessionStorage.getItem("JSESSIONID")}`,
+  "JSESSION-ID": `${Token}`,
   "Tenant-URL": `${process.env.NEXT_PUBLIC_TENANT_URL}`,
 };
 
