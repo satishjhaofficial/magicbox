@@ -20,15 +20,11 @@ import InputLabel from "@mui/material/InputLabel";
 import CloseIcon from "@mui/icons-material/Close";
 import { Formik } from "formik";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import { postQuestionAnswer } from "@/app/api";
 
 import Select from "@mui/material/Select";
 
 const QuestionAnswerGeneration = () => {
-  const headers = {
-    "JSESSION-ID": `${sessionStorage.getItem("JSESSIONID")}`,
-    "Tenant-URL": "https://mbx-staging.getmagicbox.com",
-  };
-
   const [userSelect, setUserSelect] = useState("single choice");
   const [questionCount, setQuestionCount] = useState(2);
   const [fileUrl, setFileUrl] = useState(null);
@@ -54,11 +50,8 @@ const QuestionAnswerGeneration = () => {
     };
   }, []);
 
-  console.log(fileUrl);
-
   return (
     <Box>
-      {process.env.NEXT_PUBLIC_SESSION_ID}
       <Box display="flex" alignItems="center" mb={2}>
         <InfoOutlinedIcon fontSize="12px" />
         <Typography ml={1} fontSize={14}>
@@ -83,24 +76,19 @@ const QuestionAnswerGeneration = () => {
                   values.answer_type = radioValue;
                   values.num_questions = questionCount || 1;
                   values.question_type = userSelect;
-
                   console.log(values);
                   try {
-                    const { data } = await axios.post(
-                      "https://kea-ml-staging.getmagicbox.com/GenerateQA",
-                      values,
-                      { headers }
-                    );
-                    setResult(data?.response);
+                    const data = await postQuestionAnswer(values);
                     console.log(data);
-                  } catch (error) {
-                    console.log(error);
-                    if (error?.response?.status === 401) {
-                      window.location.href =
-                        "https://mbx-staging.getmagicbox.com/login.htm?tenant=Magic";
+                    if (data?.response?.status === 401) {
+                      window.location.href = `${process.env.NEXT_PUBLIC_LOGIN_URL}`;
+                    } else if (data?.response?.status === 200) {
+                      setResult(data?.response);
                     } else {
                       alert(error?.response?.data?.response);
                     }
+                  } catch (error) {
+                    console.log(error);
                   }
                   setSubmitting(false);
                 }}
@@ -316,7 +304,7 @@ const QuestionAnswerGeneration = () => {
                       </Typography>
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: result.replaceAll("\n", "</br>"),
+                          __html: result?.replaceAll("\n", "</br>"),
                         }}
                       />
                     </>
